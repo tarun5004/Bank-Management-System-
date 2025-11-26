@@ -1,0 +1,18 @@
+[
+    {
+        "name": "tarun",
+        "age": 45,
+        "email": "aarav",
+        "pin": 4563,
+        "accountNo": 1234,
+        "balance": 0
+    },
+    {
+        "name": "varun ",
+        "age": 19,
+        "email": "varun@gmail.com",
+        "pin": 1234,
+        "accountNo": "%q(69f2v",
+        "balance": 0
+    }
+]
