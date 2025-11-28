@@ -1,0 +1,14 @@
+# Bank Management System Dependencies
+# Python 3.8+ required
+
+# Web Framework
+streamlit>=1.28.0
+
+# Note: The following are built-in Python modules used:
+# - json (data persistence)
+# - hashlib (PIN hashing)
+# - random (account number generation)
+# - string (character sets)
+# - pathlib (file path handling)
+# - re (email validation)
+# - typing (type hints)
