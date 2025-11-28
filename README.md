@@ -1,143 +1,123 @@
 # Bank Management System
 
-A command-line based banking application built with Python that provides essential banking operations with persistent data storage using JSON.
+A modern banking application built with Python featuring both a command-line interface and a Streamlit web interface. The system provides essential banking operations with secure PIN hashing and persistent JSON data storage.
 
 ## 🎯 Project Overview
 
-This Bank Management System is a console-based application that simulates core banking functionalities. The system allows users to create accounts, manage deposits, and maintain account information with data persistence through JSON file storage.
+This Bank Management System is a full-featured application that simulates core banking functionalities. The system supports account creation, deposits, withdrawals, account management, and secure authentication with data persistence through JSON file storage.
 
-## 🏗️ Architecture
+## ✨ Features
 
-The application follows an Object-Oriented Programming (OOP) approach with a single `Bank` class that encapsulates all banking operations and data management.
+### Core Banking Operations
+- **📝 Account Creation** - Register with name, age, email, and secure PIN
+- **💰 Deposit** - Add funds to your account (up to ₹100,000 per transaction)
+- **💸 Withdraw** - Withdraw funds with balance verification
+- **📊 View Details** - Check account information with masked PIN
+- **✏️ Update Details** - Modify name, email, or PIN
+- **🗑️ Delete Account** - Close account with confirmation
 
-### Class Structure
+### Security Features
+- 🔐 SHA-256 PIN hashing (PINs are never stored in plain text)
+- 🛡️ Input validation (email format, PIN length, age verification)
+- 🔒 Session management for web interface
+- 👁️ Masked account numbers in logs
 
-```
-Bank
-├── Class Attributes
-│   ├── database_path (str): Path to JSON database file
-│   └── data (list): In-memory storage for account records
-│
-├── Private Methods
-│   ├── __update_database() - Persists data to JSON file
-│   └── __account_number_generator() - Generates unique account numbers
-│
-└── Public Methods
-    ├── Create_account() - Account creation workflow
-    └── deposit() - Money deposit functionality
-```
-
-## 📋 Features
-
-### 1. **Account Creation**
-- User registration with validation
-- Age verification (minimum 18 years)
-- 4-digit PIN authentication
-- Unique account number generation
-- Initial balance initialization
-
-### 2. **Deposit Management**
-- Account verification via account number and PIN
-- Amount validation (0 < amount ≤ 100,000)
-- Real-time balance update
-- Immediate data persistence
-
-### 3. **Data Persistence**
-- Automatic JSON file creation
-- Real-time data synchronization
-- Error handling for file operations
-
-## 🔧 Technical Implementation
-
-### Core Methods
-
-#### `__update_database()` - Static Method
-```python
-@staticmethod
-def __update_database():
-    with open(Bank.database_path, "w") as file:
-        file.write(json.dumps(Bank.data, indent=4))
-```
-**Purpose**: Writes the current state of all accounts to `data.json`  
-**Access Level**: Private (name mangling with `__`)  
-**Return Type**: None
-
-#### `__account_number_generator()` - Class Method
-```python
-@classmethod
-def __account_number_generator(cls):
-    alpha = random.choices(string.ascii_letters, k=3)
-    digit = random.choices(string.digits, k=3)
-    special_char = random.choices("!@#$%^&*()", k=2)
-    id = alpha + digit + special_char
-    random.shuffle(id)
-    return "".join(id)
-```
-**Purpose**: Generates unique 8-character account numbers  
-**Format**: 3 letters + 3 digits + 2 special characters (shuffled)  
-**Example Output**: `Z21)i*U9`
-
-#### `Create_account()` - Instance Method
-**Workflow**:
-1. Collects user information (name, age, email, PIN)
-2. Validates eligibility criteria
-3. Generates unique account number
-4. Initializes account with zero balance
-5. Appends to in-memory data structure
-6. Persists to database
-
-**Validation Rules**:
-- Age ≥ 18
-- PIN must be exactly 4 digits
-
-#### `deposit()` - Instance Method
-**Workflow**:
-1. Authenticates user with account number and PIN
-2. Validates deposit amount
-3. Updates account balance
-4. Persists changes to database
-
-**Business Rules**:
-- Maximum single deposit: ₹100,000
-- Minimum deposit: > ₹0
+### User Interfaces
+- **Web Interface** - Modern Streamlit-based UI with intuitive navigation
+- **CLI Interface** - Traditional command-line interface for terminal users
 
 ## 🛠️ Technologies & Libraries
 
 | Library | Purpose |
 |---------|---------|
+| `streamlit` | Web application framework |
 | `json` | Data serialization and persistence |
-| `random` | Random selection for account number generation |
-| `string` | Character sets for ID generation |
-| `pathlib.Path` | Cross-platform file path handling |
+| `hashlib` | Secure PIN hashing (SHA-256) |
+| `re` | Email validation regex |
+| `random` | Account number generation |
+| `pathlib` | Cross-platform file handling |
+| `typing` | Type hints for code clarity |
 
-## 📊 Data Structure
+## 📁 Project Structure
 
-### Account Object Schema
-```json
-{
-    "name": "string",
-    "age": "integer",
-    "email": "string",
-    "pin": "integer (4 digits)",
-    "accountNo": "string (8 characters)",
-    "balance": "float"
-}
+```
+Bank-Management-System-/
+├── app.py              # Streamlit web application
+├── bank.py             # Refactored Bank class with all operations
+├── main.py             # Legacy CLI application
+├── data.json           # JSON database (auto-generated)
+├── requirements.txt    # Python dependencies
+└── README.md           # Project documentation
 ```
 
-### Database Storage
-- **File**: `data.json`
-- **Format**: JSON array of account objects
-- **Encoding**: UTF-8
-- **Indentation**: 4 spaces for readability
+## 🚀 Installation
 
-## 🚀 Usage
+### Prerequisites
+- Python 3.8 or higher
+- pip (Python package manager)
 
-### Running the Application
+### Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/tarun5004/Bank-Management-System-.git
+   cd Bank-Management-System-
+   ```
+
+2. **Create a virtual environment (recommended)**
+   ```bash
+   python -m venv venv
+   
+   # On Windows
+   venv\Scripts\activate
+   
+   # On macOS/Linux
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## 💻 Running the Application
+
+### Web Interface (Streamlit)
+
+```bash
+streamlit run app.py
+```
+
+This will start a local web server and open the application in your default browser at `http://localhost:8501`.
+
+### Command-Line Interface
+
+```bash
+python bank.py
+```
+
+Or use the legacy CLI:
 ```bash
 python main.py
 ```
 
-### Menu Options
+## 📖 Usage Guide
+
+### Web Interface Navigation
+
+1. **Home** - Welcome page with feature overview
+2. **Create Account** - Fill in the form with:
+   - Full name (letters and spaces only)
+   - Age (minimum 18 years)
+   - Valid email address
+   - 4-digit PIN
+3. **Deposit/Withdraw** - Login with account number and PIN
+4. **Account Details** - View your account information
+5. **Update Details** - Modify your profile
+6. **Delete Account** - Close your account (requires confirmation)
+
+### CLI Menu Options
+
 ```
 Press 1 For Creating an account
 Press 2 for Depositing the Money in the bank
@@ -147,94 +127,92 @@ Press 5 for updating details
 Press 6 for deleting your account
 ```
 
-### Example Workflow
+## 📊 Data Structure
 
-**Creating an Account:**
-```
-Tell your response :- 1
-Tell your name:- Varun Kumar
-Tell your age:- 25
-Tell your email:- varun@example.com
-Tell your 4 no pin:- 1234
-
-Account created successfully.
-Account Number: A7b@3k*2
-Please note down your account number for future reference.
-```
-
-**Making a Deposit:**
-```
-Tell your response :- 2
-Enter your account number:- A7b@3k*2
-Enter your pin:- 1234
-Enter the amount to be deposited:- 5000
-
-Amount 5000.0 deposited successfully. New balance is 5000.0
+### Account Object Schema
+```json
+{
+    "name": "string",
+    "age": "integer",
+    "email": "string (validated format)",
+    "pin": "string (SHA-256 hash)",
+    "accountNo": "string (8 characters)",
+    "balance": "float"
+}
 ```
 
-## 🔐 Security Considerations
+## 🔧 API Reference
 
-- PIN-based authentication
-- Private methods for internal operations (name mangling)
-- Input validation at multiple levels
-- Age verification for account creation
+### Bank Class Methods
 
-## 🎓 Key Programming Concepts
+| Method | Description |
+|--------|-------------|
+| `create_account(name, age, email, pin)` | Create a new account |
+| `deposit(account_no, pin, amount)` | Deposit funds |
+| `withdraw(account_no, pin, amount)` | Withdraw funds |
+| `get_details(account_no, pin)` | Get account details |
+| `update_details(account_no, pin, ...)` | Update account info |
+| `delete_account(account_no, pin)` | Delete account |
 
-### Object-Oriented Programming
-- Encapsulation: Data and methods bundled in `Bank` class
-- Abstraction: Private methods hide implementation details
-- Class vs Instance methods: Strategic use of decorators
+### Validation Methods
 
-### Data Persistence
-- File I/O operations
-- JSON serialization/deserialization
-- Exception handling for file operations
+| Method | Description |
+|--------|-------------|
+| `validate_email(email)` | Check email format |
+| `validate_pin(pin)` | Check PIN is 4 digits |
+| `validate_name(name)` | Check name format |
+| `validate_age(age)` | Check age ≥ 18 |
 
-### Input Validation
-- Type checking (int, float conversions)
-- Range validation (age, amount limits)
-- Length validation (PIN digits)
+### Custom Exceptions
 
-### List Comprehension
-```python
-userdata = [user for user in Bank.data if user['accountNo'] == acc_no and user['pin'] == pin]
+| Exception | When Raised |
+|-----------|-------------|
+| `ValidationError` | Invalid input data |
+| `AccountNotFoundError` | Account doesn't exist |
+| `AuthenticationError` | Wrong PIN |
+| `InsufficientFundsError` | Not enough balance |
+
+## 🔐 Security Best Practices
+
+1. **Never share your PIN** - It's securely hashed and cannot be recovered
+2. **Save your account number** - Required for all transactions
+3. **Use a unique PIN** - Don't reuse PINs from other services
+4. **Logout after use** - Especially on shared computers
+
+## 🧪 Development
+
+### Running Tests (if applicable)
+```bash
+python -m pytest tests/
 ```
-Efficient filtering of account data based on credentials
 
-## 📁 Project Structure
-```
-Bank Management/
-├── main.py           # Main application file
-├── data.json         # Database file (auto-generated)
-└── README.md         # Project documentation
-```
+### Code Style
+The project follows PEP 8 guidelines with:
+- Type hints for all function parameters and returns
+- Docstrings for all classes and methods
+- Constants for magic numbers
 
-## 🐛 Error Handling
+## 📝 Version History
 
-- File not found handling during initialization
-- Invalid input type handling
-- Authentication failure messages
-- Amount validation feedback
+- **v2.0** - Added Streamlit web interface, PIN hashing, and full CRUD operations
+- **v1.0** - Initial CLI version with basic account creation and deposits
 
-## 🔮 Future Enhancements
+## 🤝 Contributing
 
-- [ ] Withdrawal functionality
-- [ ] Account details viewer
-- [ ] Profile update mechanism
-- [ ] Account deletion with confirmation
-- [ ] Transaction history
-- [ ] Password encryption
-- [ ] Multiple user session management
-- [ ] GUI implementation
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 👨‍💻 Development Notes
+## 📄 License
 
-**Language**: Python 3.x  
-**Paradigm**: Object-Oriented Programming  
-**Data Storage**: JSON-based flat file database  
-**Interface**: Command-line interface (CLI)
+This project is open source and available under the MIT License.
+
+## 👨‍💻 Author
+
+**Tarun** - [GitHub Profile](https://github.com/tarun5004)
 
 ---
 
-**Developed as a demonstration of core banking operations with Python OOP principles and file-based data persistence.**
+**Built with ❤️ using Python and Streamlit**
