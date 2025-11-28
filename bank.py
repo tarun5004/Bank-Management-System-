@@ -227,6 +227,23 @@ class Bank:
         
         return account
     
+    def verify_credentials(self, account_no: str, pin: str) -> bool:
+        """
+        Verify user credentials without returning account data.
+        
+        Args:
+            account_no: The account number.
+            pin: The PIN (unhashed).
+            
+        Returns:
+            bool: True if credentials are valid, False otherwise.
+        """
+        try:
+            self._authenticate(account_no, pin)
+            return True
+        except (AccountNotFoundError, AuthenticationError):
+            return False
+    
     def create_account(self, name: str, age: int, email: str, pin: str) -> Dict[str, Any]:
         """
         Create a new bank account.
@@ -298,8 +315,8 @@ class Bank:
             AuthenticationError: If PIN is incorrect.
             ValidationError: If amount is invalid.
         """
-        if amount <= 0:
-            raise ValidationError("Amount must be greater than zero.")
+        if amount < MIN_DEPOSIT:
+            raise ValidationError(f"Minimum deposit amount is {MIN_DEPOSIT}.")
         
         if amount > MAX_DEPOSIT:
             raise ValidationError(f"Maximum deposit limit is {MAX_DEPOSIT}.")

@@ -176,16 +176,15 @@ def login_section():
     
     if st.button("Login", use_container_width=True):
         if account_no and pin:
-            try:
-                # Verify credentials
-                st.session_state.bank._authenticate(account_no, pin)
+            # Verify credentials using public method
+            if st.session_state.bank.verify_credentials(account_no, pin):
                 st.session_state.logged_in = True
                 st.session_state.current_account = account_no
                 st.session_state.current_pin = pin
                 st.success("✅ Logged in successfully!")
                 st.rerun()
-            except (AccountNotFoundError, AuthenticationError) as e:
-                st.error(f"❌ {e}")
+            else:
+                st.error("❌ Invalid account number or PIN.")
         else:
             st.warning("Please enter both account number and PIN.")
     
